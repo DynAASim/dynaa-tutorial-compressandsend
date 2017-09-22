@@ -69,14 +69,18 @@ public class CompressAndSend {
          * to be used.
          *
          */
-        final Task compressAndSendTask = SampleAndCompressTask.build();
+    	
+    	
+    	// Create a "compressAndSendTask" using the "build" function of the SampleAndCompressTask class
+        
+    	// Insert your code here
+    	
+    	
         final Task sinkTask = SinkTask.build();
 
-        final String compressionAlgorithm = "ZIP";
-        final double compressionPercentage = 20.0;
+        compressAndSendTask.set("COMPRESSION_ALGORITHM", "ZIP");
+        compressAndSendTask.set("COMPRESSION_PERCENTAGE", 20.0);
 
-        compressAndSendTask.set("COMPRESSION_ALGORITHM", compressionAlgorithm);
-        compressAndSendTask.set("COMPRESSION_PERCENTAGE", compressionPercentage);
 
         /**
          * The second part of a DynAA model is called the physical view.
@@ -94,14 +98,22 @@ public class CompressAndSend {
          *
          */
 
-        final Node compressAndSendNode = SampleAndCompressNode.build();
+    	// Create a "compressAndSendNode" using the "build" function of the SampleAndCompressNode class
+        
+    	// Insert your code here
+        
+
         final Node sinkNode = SinkNode.build();
 
+        
         final CommunicationDevice compressAndSendCommDev = ((CommunicationDevice) compressAndSendNode
                 .getPeripheral("COMM_DEVICE"));
         final CommunicationDevice sinkDev = ((CommunicationDevice) sinkNode.getPeripheral("COMM_DEVICE"));
 
+        
         final Channel channel = new DelayChannel(5 * (2 ^ 20)); // 5 Mbytes per second bandwidth
+        
+        
         compressAndSendCommDev.setChannel(channel);
         sinkDev.setChannel(channel);
         sinkDev.listen();
@@ -121,11 +133,20 @@ public class CompressAndSend {
          * try out two transmitting messages through two different radios, for example !
          *
          */
-        compressAndSendNode.execute(compressAndSendTask);
         sinkNode.execute(sinkTask);
-
-        compressAndSendCommDev.bind((OutputPort) compressAndSendTask.port("OUTPORT"));
         sinkDev.bind((InputPort) sinkTask.port("INPORT"));
+
+        
+        // Now, we need to indicate that the compressAndSendTask will be executed in the compressAndSendNode
+        // Do that by calling the method "execute" of the correct node 
+        
+        // Insert your code here
+        
+        
+        // Also, we need to bind the communication device of the compressAndSendNode to the correct port of the compressAndSendTask.
+        
+        // Insert your code here  
+        
 
         /**
          * Finally, often a DynAA model uses loggers to collect information during a simulation.

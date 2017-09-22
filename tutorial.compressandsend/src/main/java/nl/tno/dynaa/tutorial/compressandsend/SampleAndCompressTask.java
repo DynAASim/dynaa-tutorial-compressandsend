@@ -173,20 +173,18 @@ public class SampleAndCompressTask {
 
                 int packetSize = (int) (2.0 * dataSize);
 
-                int nOperations = 0;
+                int nOperations = 1;
 
                 switch (algorithm) {
                 case "ZIP":
                     packetSize = (int) (SampleAndCompressTask.zipSize(compressionRate) * dataSize);
-                    nOperations = (int) (SampleAndCompressTask.zipFlOps(compressionRate) * packetSize);
+                    nOperations = (int) (SampleAndCompressTask.zipFlOps(compressionRate) * dataSize);
                     break;
                 case "RAR":
                     packetSize = (int) (SampleAndCompressTask.rarSize(compressionRate) * dataSize);
-                    nOperations = (int) (SampleAndCompressTask.rarFlOps(compressionRate) * packetSize);
+                    nOperations = (int) (SampleAndCompressTask.rarFlOps(compressionRate) * dataSize);
                     break;
                 case "NONE":
-                    packetSize = (int) (dataSize);
-                    nOperations = 1;
                     break;
                 default:
                     if (!(algorithm.equals("NONE"))) {

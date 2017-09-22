@@ -86,8 +86,14 @@ public class SampleAndCompressTask {
         sampleAndCompressTask.addProperty("AVERAGE_PACKAGE_SIZE", (double) 5 * (2 ^ 20));
         sampleAndCompressTask.addProperty("SDEVIATION_PACKAGE_SIZE", 0.0);
 
-        sampleAndCompressTask.addProperty("COMPRESSION_ALGORITHM", "NONE"); // "ZIP", "RAR"
-        sampleAndCompressTask.addProperty("COMPRESSION_PERCENTAGE", 0.0); // [0.0, 100.0]
+        // sampleAndCompressTask should also have two other properties:
+        // COMPRESSION_ALGORITHM, which can have values "NONE", "ZIP", and "RAR" , and
+        // COMPRESSION_PERCENTAGE, which can be a floating value between 0 and 90
+        
+        
+        
+        // Insert your code here
+        
 
         /**
          * Further on, the construction of a task consists in defining its behavior. There are many ways to do that, but
@@ -123,13 +129,24 @@ public class SampleAndCompressTask {
                 SampleAndCompressTask.COMPRESS_DATA_CONTEXT_KEY);
 
         // compress segment
+        // We need a custom segment that models the behavior we want for compression algorithms
+        // We are going to define it in another function called "createCompressSegment" and include it here.
         final TaskSegment compress = SampleAndCompressTask.createCompressSegment(sampleAndCompressTask);
 
+        
         // move data from compress to send context
         final CopyDataSegment compress2send = new CopyDataSegment(SampleAndCompressTask.COMPRESS_DATA_CONTEXT_KEY,
                 SendSegment.MESSAGE_SEND_CONTEXT_KEY);
 
-        final CalculateSegment calculateCompression = new CalculateSegment();
+        // We also want to model that the compress behavior defined earlier will take time of the processor, and consume energy.
+        // We do that by adding a "CalculateSegment" from the library.  
+        // Create a "calculateCompression" object of the type CalculateSegment.
+
+        
+        
+        // Insert your code here
+        
+        
 
         final SendSegment send = new SendSegment(outputPort, null, false);
 
@@ -139,13 +156,22 @@ public class SampleAndCompressTask {
          * The control flow between segments is registered in the task behaviour object.
          *
          */
+        
+        // We created all the necessary segments.
+        // Now, we have to add them to the task behaviour (taskBehavior object).
+        // Notice that we used a LinkedBehaviourSpecification, which means that segments must be in the correct order.
+        // Place the segment "calculateCompression" into the taskBehaviour in the right spot.
+
+        
+        // Insert your code below
+        
+        
         taskBehaviour.setLooping(true);
         taskBehaviour.addSegment(delaySegment);
         taskBehaviour.addSegment(senseSegment);
         taskBehaviour.addSegment(calculateSensorSampling);
         taskBehaviour.addSegment(sense2compress);
         taskBehaviour.addSegment(compress);
-        taskBehaviour.addSegment(calculateCompression);
         taskBehaviour.addSegment(compress2send);
         taskBehaviour.addSegment(send);
 
@@ -171,22 +197,24 @@ public class SampleAndCompressTask {
 
                 final double dataSize = (double) taskContext.get(SampleAndCompressTask.COMPRESS_DATA_CONTEXT_KEY);
 
-                int packetSize = (int) (2.0 * dataSize);
+                int packetSize = (int) ( 2 * dataSize);
 
-                int nOperations = 0;
-
+                int nOperations = 1;
+                
+                // This function should apply the compression algorithm.
+                // The final packet size will depend on which algorithm was selected and the compression percentage
+                // Similar, the necessary number of floating point operations will change with the same parameters AND the initial size of the packet being compressed
                 switch (algorithm) {
-                case "ZIP":
-                    packetSize = (int) (SampleAndCompressTask.zipSize(compressionRate) * dataSize);
-                    nOperations = (int) (SampleAndCompressTask.zipFlOps(compressionRate) * packetSize);
-                    break;
-                case "RAR":
-                    packetSize = (int) (SampleAndCompressTask.rarSize(compressionRate) * dataSize);
-                    nOperations = (int) (SampleAndCompressTask.rarFlOps(compressionRate) * packetSize);
-                    break;
+
+                
+                
+                // Insert your code here
+                // Make cases for the different algorithms
+                // Use functions given in this class to calculate the compressed packet size and the number of required operations
+                // update the variables "packetSize" and "nOperations" accordingly
+                
+                
                 case "NONE":
-                    packetSize = (int) (dataSize);
-                    nOperations = 1;
                     break;
                 default:
                     if (!(algorithm.equals("NONE"))) {
